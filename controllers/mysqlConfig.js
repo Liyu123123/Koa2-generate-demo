@@ -19,8 +19,10 @@ let allServices = {
                     connection.query(sql, values, (err, rows) => {
 
                         if (err) {
+                            console.log('err', err)
                             reject(err)
                         } else {
+                            console.log('rows', rows)
                             resolve(rows)
                         }
                         connection.release()
@@ -35,9 +37,13 @@ let allServices = {
         return allServices.query(_sql)
     },
     addUserData: (obj) => {
-         let _sql = "insert into users set name=?,pass=?,avator=?,moment=?;"
+        let _sql = "INSERT INTO users(userid,username,password) VALUES(?,?,?)"
          return allServices.query(_sql, obj)
      },
+     checkPassWord: (obj) => {
+        let _sql = `select * from users where username=${obj.username} and password=${obj.password}`
+        return allServices.query(_sql, obj)
+     }
 }
 
 module.exports = allServices;
